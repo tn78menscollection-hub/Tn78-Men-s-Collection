@@ -1,0 +1,589 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-heading: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --brand-red: #DC2626;
+  --brand-gold: #E2C58A;
+  --brand-amber: #F59E0B;
+  --brand-canvas: #FAF8F5;
+  --brand-espresso: #111827;
+}
+
+@layer base {
+  * {
+    border-color: #E5E7EB;
+  }
+
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: #FAF8F5;
+    color: #111827;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: rgba(220, 38, 38, 0.2);
+    color: #111827;
+  }
+
+  /* Custom Clean Scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #FAF8F5;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D1D5DB;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9CA3AF;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Hide horizontal scrollbar but keep smooth snap */
+  .scroll-snap-x {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll-snap-x::-webkit-scrollbar {
+    display: none;
+  }
+  .scroll-snap-x > * {
+    scroll-snap-align: start;
+  }
+}
+
+@layer utilities {
+  /* ======================================================================
+     GLASSMORPHISM PRESETS
+     ====================================================================== */
+  .glass-header {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .glass-pill {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .glass-card-dark {
+    background: rgba(15, 17, 24, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(226, 197, 138, 0.12);
+  }
+
+  /* Frosted glass card with animated gradient border */
+  .glass-gradient-border {
+    position: relative;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    overflow: hidden;
+  }
+  .glass-gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--brand-red), var(--brand-gold), var(--brand-amber), var(--brand-red));
+    background-size: 300% 300%;
+    animation: borderGradientSpin 4s ease infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* ======================================================================
+     TEXT & GRADIENT UTILITIES
+     ====================================================================== */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #FFF0D4 0%, #E2C58A 50%, #B89658 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-silver {
+    background: linear-gradient(135deg, #FFFFFF 0%, #CBD5E1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-fire {
+    background: linear-gradient(135deg, #DC2626 0%, #F59E0B 50%, #DC2626 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s linear infinite;
+  }
+
+  /* ======================================================================
+     BUTTON EFFECTS
+     ====================================================================== */
+  /* Shimmer button overlay */
+  .btn-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shimmer::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      60deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.25) 50%,
+      transparent 80%
+    );
+    transform: rotate(30deg) translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  .btn-shimmer:hover::after {
+    transform: rotate(30deg) translateX(100%);
+  }
+
+  /* Magnetic hover — subtle pull toward cursor */
+  .btn-magnetic {
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Ripple tap effect for mobile */
+  .ripple-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  .ripple-effect::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.35) 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform 0.5s, opacity 0.8s;
+  }
+  .ripple-effect:active::after {
+    transform: scale(0, 0);
+    opacity: 0.6;
+    transition: 0s;
+  }
+
+  /* ======================================================================
+     GLOW & SHADOW EFFECTS
+     ====================================================================== */
+  .glow-border {
+    box-shadow: 0 0 15px rgba(226, 197, 138, 0.2);
+  }
+  .glow-border:hover {
+    box-shadow: 0 0 25px rgba(226, 197, 138, 0.4);
+  }
+
+  .glow-red {
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.15), 0 0 60px rgba(220, 38, 38, 0.05);
+  }
+  .glow-red:hover {
+    box-shadow: 0 0 30px rgba(220, 38, 38, 0.25), 0 0 80px rgba(220, 38, 38, 0.1);
+  }
+
+  .glow-gold-intense {
+    box-shadow: 0 0 20px rgba(226, 197, 138, 0.3), 0 0 60px rgba(226, 197, 138, 0.1);
+    transition: box-shadow 0.4s ease;
+  }
+  .glow-gold-intense:hover {
+    box-shadow: 0 0 35px rgba(226, 197, 138, 0.5), 0 0 80px rgba(226, 197, 138, 0.2);
+  }
+
+  /* ======================================================================
+     CARD EFFECTS
+     ====================================================================== */
+  /* Card lift on hover — smooth 3D-like lift */
+  .card-lift {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.15);
+  }
+  @media (max-width: 480px) {
+    .card-lift:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  /* 3D perspective tilt on hover */
+  .card-3d {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .card-3d:hover {
+    transform: translateY(-6px) rotateX(2deg) rotateY(-2deg);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2),
+                0 0 20px rgba(220, 38, 38, 0.05);
+  }
+
+  /* Image hover overlay with blur-to-sharp */
+  .img-reveal-overlay {
+    position: relative;
+    overflow: hidden;
+  }
+  .img-reveal-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .img-reveal-overlay:hover::after {
+    opacity: 1;
+  }
+
+  /* ======================================================================
+     MOBILE SAFE AREAS & SPACING
+     ====================================================================== */
+  .pb-safe {
+    padding-bottom: calc(72px + var(--safe-bottom));
+  }
+
+  /* ======================================================================
+     ANIMATED GRADIENT BACKGROUNDS
+     ====================================================================== */
+  .bg-gradient-animated {
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite;
+  }
+
+  .bg-mesh-gradient {
+    background:
+      radial-gradient(at 40% 20%, rgba(220, 38, 38, 0.08) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, rgba(245, 158, 11, 0.06) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, rgba(226, 197, 138, 0.08) 0px, transparent 50%),
+      radial-gradient(at 80% 50%, rgba(220, 38, 38, 0.04) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(245, 158, 11, 0.06) 0px, transparent 50%);
+    background-size: 200% 200%;
+    animation: meshShift 12s ease-in-out infinite alternate;
+  }
+
+  /* ======================================================================
+     SCROLL REVEAL SYSTEM
+     ====================================================================== */
+  .reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Staggered animation delays for grid children */
+  .stagger-1 { transition-delay: 0.05s; }
+  .stagger-2 { transition-delay: 0.1s; }
+  .stagger-3 { transition-delay: 0.15s; }
+  .stagger-4 { transition-delay: 0.2s; }
+  .stagger-5 { transition-delay: 0.25s; }
+  .stagger-6 { transition-delay: 0.3s; }
+  .stagger-7 { transition-delay: 0.35s; }
+  .stagger-8 { transition-delay: 0.4s; }
+  .stagger-9 { transition-delay: 0.45s; }
+  .stagger-10 { transition-delay: 0.5s; }
+
+  /* ======================================================================
+     IMAGE & LOADING EFFECTS
+     ====================================================================== */
+  .skeleton-loading {
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Active tap feedback for mobile buttons */
+  .tap-feedback:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+
+  /* Smooth horizontal scroll container for mobile */
+  .mobile-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 12px;
+    padding-bottom: 8px;
+  }
+  .mobile-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  .mobile-scroll-container > * {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+
+  /* ======================================================================
+     SCROLL PROGRESS BAR
+     ====================================================================== */
+  .scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--brand-red), var(--brand-gold), var(--brand-amber));
+    z-index: 9999;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.4);
+  }
+
+  /* ======================================================================
+     ANIMATED GRADIENT BORDER (for offer cards, CTAs)
+     ====================================================================== */
+  .animated-border-gradient {
+    position: relative;
+    background: white;
+    overflow: hidden;
+  }
+  .animated-border-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: inherit;
+    /* Safe fallback for Firefox and browsers without @property support */
+    background: linear-gradient(135deg, var(--brand-red), var(--brand-gold), var(--brand-amber), var(--brand-red));
+    background: conic-gradient(
+      from var(--border-angle, 0deg),
+      var(--brand-red),
+      var(--brand-gold),
+      var(--brand-amber),
+      var(--brand-red)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: rotateBorderAngle 4s linear infinite;
+    pointer-events: none;
+  }
+
+  /* ======================================================================
+     KEYFRAME ANIMATIONS (CSS-only)
+     ====================================================================== */
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes meshShift {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+  }
+
+  @keyframes borderGradientSpin {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  @keyframes rotateBorderAngle {
+    to { --border-angle: 360deg; }
+  }
+
+  @keyframes kenBurns {
+    0% { transform: scale(1) translate(0, 0); }
+    50% { transform: scale(1.08) translate(-1%, -1%); }
+    100% { transform: scale(1) translate(0, 0); }
+  }
+
+  .animate-ken-burns {
+    animation: kenBurns 8s ease-in-out infinite;
+  }
+
+  @keyframes textRevealUp {
+    0% {
+      opacity: 0;
+      transform: translateY(100%) skewY(3deg);
+      filter: blur(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) skewY(0);
+      filter: blur(0);
+    }
+  }
+
+  .text-reveal-up {
+    animation: textRevealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+
+  @keyframes starsFill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+
+  .stars-fill-animate {
+    animation: starsFill 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* ======================================================================
+     TOAST NOTIFICATION
+     ====================================================================== */
+  @keyframes toastSlideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(100%) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes toastSlideOut {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+  }
+
+  @keyframes toastProgress {
+    0% { width: 100%; }
+    100% { width: 0%; }
+  }
+
+  /* ======================================================================
+     CONFETTI BURST
+     ====================================================================== */
+  @keyframes confettiFall {
+    0% {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(60px) rotate(720deg) scale(0);
+    }
+  }
+
+  /* ======================================================================
+     PARTICLE / SPARKLE EFFECT
+     ====================================================================== */
+  @keyframes sparkleFloat {
+    0%, 100% {
+      opacity: 0;
+      transform: translateY(0) scale(0);
+    }
+    20% {
+      opacity: 1;
+      transform: translateY(-10px) scale(1);
+    }
+    80% {
+      opacity: 0.5;
+      transform: translateY(-40px) scale(0.5);
+    }
+  }
+
+  .sparkle-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .sparkle-dot {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--brand-gold);
+    animation: sparkleFloat 3s ease-in-out infinite;
+  }
+
+  /* ======================================================================
+     PREFERS REDUCED MOTION — respect user accessibility
+     ====================================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Register custom property for conic gradient animation */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}

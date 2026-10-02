@@ -1,0 +1,11 @@
+# TN78 Men's Wear robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /api/*
+Disallow: /checkout
+Disallow: /cart
+Disallow: /account/*
+
+Sitemap: https://tn78menswear.com/sitemap.xml
